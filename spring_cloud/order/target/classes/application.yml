@@ -18,6 +18,5 @@ eureka:
     fetch-registry: true
     register-with-eureka: true
     service-url:
-      #�˺����������http://����@��ip����
       defaultZone: http://root:a5613305@192.168.0.101:8003/eureka/
 

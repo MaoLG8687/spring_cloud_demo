@@ -1,7 +1,9 @@
 package cn.cooplan.order.service.impl;
 
+import cn.cooplan.order.feign.GoodsFeignClient;
 import cn.cooplan.order.service.OrderService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import dao.OrderDao;
 import dao.OrderGoodsDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +40,9 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private OrderGoodsDao orderGoodsDao;
 
+    @Autowired
+    private GoodsFeignClient goodsFeignClient;
+
     @Override
     public List<Order> getAllOrder() {
 //        List<Order> orders = orderDao.selectList(null);
@@ -45,8 +50,8 @@ public class OrderServiceImpl implements OrderService {
         return orders;
     }
 
-
-    //使用负载均衡ribbon写法, 默认
+    //Ribbon + Feign
+    @HystrixCommand(fallbackMethod = "getOrderInGoodsHystrix")
     @Override
     public List<Goods> getOrderInGoods(Integer orderId) {
         OrderGoods o = new OrderGoods();
@@ -54,15 +59,40 @@ public class OrderServiceImpl implements OrderService {
         QueryWrapper queryWrapper = new QueryWrapper(o);
         List<OrderGoods> ogs = orderGoodsDao.selectList(queryWrapper);
         List<Goods> goodses = new ArrayList<>();
-        String serviceId = "GOODS";
-        for (OrderGoods orderGoods : ogs) {
-            String url = "http://" + serviceId + "/goods/getGoodsById?goodsId=" + orderGoods.getGoodsId();
-            Goods goods = restTemplate.getForObject(url, Goods.class);
+        for (OrderGoods og: ogs) {
+            Goods goods = goodsFeignClient.getGoodsById(og.getGoodsId());
             goodses.add(goods);
         }
-
         return goodses;
     }
+
+
+    public List<Goods> getOrderInGoodsHystrix(Integer orderId){
+        List<Goods> goodses = new ArrayList<>();
+        Goods goods = new Goods();
+        goods.setName("商品错误");
+        goodses.add(goods);
+        return goodses;
+    }
+
+
+    //使用负载均衡ribbon写法, 默认
+//    @Override
+//    public List<Goods> getOrderInGoods(Integer orderId) {
+//        OrderGoods o = new OrderGoods();
+//        o.setOrderId(orderId);
+//        QueryWrapper queryWrapper = new QueryWrapper(o);
+//        List<OrderGoods> ogs = orderGoodsDao.selectList(queryWrapper);
+//        List<Goods> goodses = new ArrayList<>();
+//        String serviceId = "GOODS";
+//        for (OrderGoods orderGoods : ogs) {
+//            String url = "http://" + serviceId + "/goods/getGoodsById?goodsId=" + orderGoods.getGoodsId();
+//            Goods goods = restTemplate.getForObject(url, Goods.class);
+//            goodses.add(goods);
+//        }
+//
+//        return goodses;
+//    }
 
     //未添加负载均衡ribbon写法
 //    @Override
