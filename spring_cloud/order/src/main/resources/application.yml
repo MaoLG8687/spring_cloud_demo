@@ -1,0 +1,23 @@
+server:
+  port: 8002
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/spring_cloud?useUnicode=true&characterEncoding=utf8
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: root
+  application:
+    name: order
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: pojo
+  configuration:
+    map-underscore-to-camel-case: true
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      #账号密码添加在http://后面@与ip隔开
+      defaultZone: http://root:a5613305@192.168.0.101:8003/eureka/
+

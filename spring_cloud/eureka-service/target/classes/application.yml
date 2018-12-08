@@ -1,0 +1,27 @@
+eureka:
+  client:
+    register-with-eureka: false #false 不将本服务注册到eureka
+    fetch-registry: false #false 不从eureka拉取资源
+    service-url:
+      defaultZone: http://192.168.0.101:8003/eureka/
+  instance:
+    prefer-ip-address: true
+
+server:
+  port: 8003
+
+#安全认证,Eureka首页打卡的安全认证
+security:
+  basic:
+    #开启HTTP认证
+    enabled: true
+  user:
+    name: root
+    password: a5613305
+
+
+
+  #开启高可用  两个Eureka相互注册,   register-with-eureka  fetch-registry 改为true
+  #一个服务8003 注册到defaultZone: 8004
+  #另一个服务8004 注册到 注册到defaultZone: 8003
+  #备注  defaultZone 一定要驼峰命名 不然别的消费和生产者在Eureka找不到该server
