@@ -19,4 +19,4 @@ eureka:
     register-with-eureka: true
     service-url:
     #账号密码添加在http://后面@与ip隔开
-      defaultZone: http://root:a5613305@192.168.0.101:8003/eureka/
+      defaultZone: http://root:a5613305@127.0.0.1:8003/eureka/

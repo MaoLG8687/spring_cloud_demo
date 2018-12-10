@@ -3,7 +3,7 @@ eureka:
     register-with-eureka: false #false 不将本服务注册到eureka
     fetch-registry: false #false 不从eureka拉取资源
     service-url:
-      defaultZone: http://192.168.0.101:8003/eureka/
+      defaultZone: http://127.0.0.1:8003/eureka/
   instance:
     prefer-ip-address: true
 

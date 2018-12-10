@@ -1,8 +1,9 @@
 package cn.cooplan.order.feign;
 
+import feign.RequestLine;
 import org.springframework.cloud.netflix.feign.FeignClient;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import pojo.Goods;
 
 /**
@@ -14,7 +15,8 @@ import pojo.Goods;
 public interface GoodsFeignClient {
 
     //该请求方式只支持 RESTful请求方式
-    @RequestMapping("/goods/getGoodsById/{goodsId}")
-    public Goods getGoodsById(@PathVariable("goodsId") Integer goodsId);
+    @RequestMapping("/goods/getGoodsById/{goodsId}")  //采用springmvc的注解,减少学习成本
+    //@RequestLine("/goods/getGoodsById/{goodsId}")//Feign自己的注解与@RequestMapping效果一样
+    public Goods getGoodsById(@RequestParam("goodsId") Integer goodsId);
 
 }
