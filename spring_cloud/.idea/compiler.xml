@@ -10,15 +10,17 @@
         <module name="goods" />
         <module name="order" />
         <module name="public-resource" />
+        <module name="zuul-sevice" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="eureka-service" target="1.8" />
-      <module name="goods" target="1.8" />
-      <module name="order" target="1.8" />
+      <module name="eureka-service" target="1.7" />
+      <module name="goods" target="1.7" />
+      <module name="order" target="1.7" />
       <module name="pojo" target="1.7" />
-      <module name="public-resource" target="1.8" />
-      <module name="spring_cloud" target="1.8" />
+      <module name="public-resource" target="1.7" />
+      <module name="spring_cloud" target="1.7" />
+      <module name="zuul-sevice" target="1.7" />
     </bytecodeTargetLevel>
   </component>
 </project>

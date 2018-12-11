@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: zuul-service
+server:
+  port: 8004
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://root:a5613305@127.0.0.1:8003/eureka/
+  instance:
+    prefer-ip-address: true #使用ip在服务中显示状态
+zuul:
+  routes:
+    order-service: #任意写, 跟path下第一层级相同即可
+      path: /order-service/**
+      serviceId: order
